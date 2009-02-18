@@ -8,4 +8,6 @@ packer:
 
 packages:
   ajax_resource:
-    - ajax_resource
+    - init
+    - base
+    - semaphore
