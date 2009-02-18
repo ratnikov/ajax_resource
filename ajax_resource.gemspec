@@ -1,9 +1,4 @@
-require 'tasks/build'
-
 AJAX_RESOURCE_VERSION = '0.01'
-
-# first build the library
-Rake::Task["ajax_resource:build"].execute
 
 Gem::Specification.new do |s|
   s.name = "ajax_resource"
