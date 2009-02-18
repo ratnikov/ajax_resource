@@ -1,0 +1,4 @@
+
+To install the javascript in your rails directory, require 'tasks/ajax_resource' in your Rakefile to get ajax_resource:rails:install rake task.
+The task will copy the ajax_resource javascript to your public/javascripts directory.
+If you would like the compressed version, use COMPRESS=true environment setting.
