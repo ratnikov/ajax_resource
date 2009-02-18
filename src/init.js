@@ -1,0 +1,3 @@
+var AjaxResource = function() {
+  return {};
+}();
