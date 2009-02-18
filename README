@@ -1,4 +1,21 @@
 
-To install the javascript in your rails directory, require 'tasks/ajax_resource' in your Rakefile to get ajax_resource:rails:install rake task.
-The task will copy the ajax_resource javascript to your public/javascripts directory.
-If you would like the compressed version, use COMPRESS=true environment setting.
+= Ajax Resource - Javascript implementation of REST resource
+
+= Installation
+
+== Update Rakefile
+
+To include the ajax_resource installation tasks, add following to Rakefile:
+  
+  require 'task/ajax_resource'
+
+== Run installer task
+
+To install, run the <tt>ajax_resource:rails:install</tt> task:
+
+  rake ajax_resource:rails:install
+
+That will install the uncompressed library version. If you would like the
+compressed version instead, add <tt>COMPRESS=true</tt> as environment variable:
+
+  COMPRESS=true rake ajax:resource_rails:install
