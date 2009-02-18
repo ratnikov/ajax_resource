@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.name = "ajax_resource"
   s.version = AJAX_RESOURCE_VERSION
   s.authors = [ "Dmitry Ratnikov" ]
+  s.homepage = 'http://github.com/ratnikov/ajax_resource/tree/master'
   s.date = Time.now
   s.email = 'dmitryr@webitects.com'
   s.has_rdoc = false
