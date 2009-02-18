@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <script src="../lib/jquery-1.3.1.js"></script>
+    <script src="spec_helper.js"></script>
+
+    <script src="../src/ajax_resource.js"></script>
+    <!--script src="../build/community_collab-min.js"></script-->
+
+    <script src="ajax_resource_spec.js"></script>
+
+    <link rel="stylesheet" href="../lib/screw.css">
+  </head>
+  <body>
+    <div>
+      Tracker log:
+      <ul id="log">
+      </ul>
+    </div>
+    <div>
+      <div id="parse-form">
+	<input type="text" name="foo_resource[foo]" value="foobar" />
+      </div>
+      <p id="parse-form-return"></p>
+      <ul>
+	<li><input id="parse-button" type="button" value="parse" /></li>
+	<li><a class="foo-create" href="#">Create</a></li>
+	<li><a class="foo-destroy" href="#">Destroy</a></li>
+      </ul>
+      <script>
+	jQuery(document).ready(function() {
+	  jQuery("#parse-button").click(function() {
+	    var foo = FooResource.build();
+	    foo.parse_fields("#parse-form");
+	    jQuery("#parse-form-return").html("Parsed attributes: "+jQuery.pp(foo.attributes));
+	    console.log("parsed foo:");
+	    console.log(foo);
+	  });
+	});
+      </script>
+    </div>
+    <div class="ajax">
+      <form>
+	JSON response: <input type="text" id="json" />
+	<p>
+	Ajax log:
+	<ul id="log">
+	</ul>
+	</p>
+      </form>
+    </div>
+    <script>
+      jQuery("a").each(function() {
+	jQuery(this).click(function(event) {
+	  event.preventDefault();
+	});
+      });
+    </script>
+  </body>
+</html>

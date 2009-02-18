@@ -1,0 +1,11 @@
+---
+source_directory:       src
+build_directory:        build
+packer:
+  shrink_vars:  true
+  private:      true
+  base62:       true
+
+packages:
+  ajax_resource:
+    - ajax_resource
