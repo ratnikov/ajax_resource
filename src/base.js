@@ -16,7 +16,7 @@ AjaxResource.Base = function() {
 	private.plural_path = spec.plural_path;
       } else {
 	// if no plural path is specified, using singular + 's', e.g. member -> members
-	private.plural_path = private.singular.path + 's';
+	private.plural_path = private.singular_path + 's';
       }
 
       if (typeof(spec.prefix) !== "undefined") {
