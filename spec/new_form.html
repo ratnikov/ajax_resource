@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <script src="../lib/jquery-1.3.1.js"></script>
+    <script src="../lib/jquery.json-1.3.min.js"></script>
+    <script src="spec_helper.js"></script>
+
+    <script src="../src/init.js"></script>
+    <script src="../src/errors.js"></script>
+    <script src="../src/semaphore.js"></script>
+    <script src="../src/base.js"></script>
+    <script src="new_form_spec.js"></script>
+
+    <script src="../src/new_form.js"></script>
+    <!--script src="../build/community_collab-min.js"></script-->
+
+    <link rel="stylesheet" href="../lib/screw.css">
+  </head>
+  <body>
+    <div>
+      Tracker log:
+      <ul id="log">
+      </ul>
+    </div>
+    <div>
+      <div id="parse-form">
+	<div class="error" style="display: none">
+	  <p>Errors:</p>
+	  <ul>
+	  </ul>
+	</div>
+
+	<input type="text" name="foo[bar]" value="foobar" /><br />
+	<input type="submit" value="Create" />
+      </div>
+      <br />
+      <div>
+	<ul>
+	  <li>Success attributes: <input type="text" class="foo-success" /><input class="foo-success-radio" type="radio" name="success" value="true" checked="true"/></li>
+	  <li>Error attributes: <input type="text" class="foo-error" /><input type="radio" name="success" value="false" /></li>
+	</ul>
+	<input type="button" class="parse-attributes" value="Parse attributes" />
+      </div>
+    </div>
+    <!--div class="ajax">
+      <form>
+	JSON response: <input type="text" id="json" />
+	<p>
+	Ajax log:
+	<ul id="log">
+	</ul>
+	</p>
+      </form>
+    </div-->
+    <script>
+    </script>
+  </body>
+</html>
