@@ -109,8 +109,9 @@ jQuery.extend(function() {
 	options.data = jQuery.pp(options.data);
       }
 
-      AjaxTools.AjaxRequest(options).perform();
-      return "Fake contents";
+      var request = AjaxTools.AjaxRequest(options);
+      request.perform();
+      return request;
     },
     pp: function(obj) {
       if (typeof(obj) !== "undefined") {
