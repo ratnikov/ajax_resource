@@ -39,6 +39,6 @@ AjaxResource.Errors = function(selector) {
     this.show();
   };
 
-  this.hide = function() { private.div.hide(); }
-  this.show = function() { private.div.show(); }
+  this.hide = function() { private.div.hide(); };
+  this.show = function() { private.div.show(); };
 };

@@ -29,7 +29,7 @@ AjaxResource.NewForm = function(form, options) {
 
   if (typeof(options.model) !== "undefined") {
     private.new_model = function() {
-      return new options.model;
+      return new options.model();
     };
   } else {
     throw("Need to specify model for the form");
