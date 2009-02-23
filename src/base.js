@@ -97,8 +97,6 @@ AjaxResource.Base = function() {
 	    url: protected.create_path(),
 	    data: post_data, 
 	    success: function(json_response) {
-	      console.log("response:");
-	      console.log(json_response);
 	      if (protected.update_attributes(json_response)) {
 
 		// managed to update the attributes from json
