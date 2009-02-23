@@ -73,7 +73,6 @@ AjaxResource.Base = function() {
       };
 
       jQuery.extend(self, {
-
 	id: function() {
 	  if (typeof(self.attributes.id) !== "undefined") {
 	    return self.attributes.id;
@@ -91,70 +90,74 @@ AjaxResource.Base = function() {
 	},
 
 	create: function(callback) {
-	var post_data = jQuery.extend({ _method: 'post' }, self.serialize_attributes());
+	  var post_data = jQuery.extend({ _method: 'post' }, self.serialize_attributes());
 
-	return jQuery.ajax({
-	  type: 'POST',
-	  url: protected.create_path(),
-	  data: post_data, 
-	  success: function(json_response) {
-	    if (protected.update_attributes(json_response)) {
+	  return jQuery.ajax({
+	    type: 'POST',
+	    url: protected.create_path(),
+	    data: post_data, 
+	    success: function(json_response) {
+	      console.log("response:");
+	      console.log(json_response);
+	      if (protected.update_attributes(json_response)) {
 
-	      // managed to update the attributes from json
-	      callback(self);
+		// managed to update the attributes from json
+		callback(self);
+	      } else {
+
+		// no updates received, calling the callback with null
+		callback(null);
+	      }
+	    },
+	    dataType: "json"
+	  });
+	},
+
+	destroy: function(callback) {
+	  var post_data = { _method: 'delete', id: self.attributes.id };
+
+	  return jQuery.ajax({
+	    type: 'POST',
+	    url: protected.destroy_path(),
+	    data: post_data,
+	    success: function(json_response) {
+	      if (protected.update_attributes(json_response)) {
+		callback(self);
+	      } else {
+		callback(null);
+	      }
+	    },
+	    dataType: "json"
+	  });
+	},
+
+	parse_fields: function(div) {
+	  var parsed_attributes = {};
+	  jQuery(div).find(":input").each(function() {
+	    var regex = private.resource_name + '\\[(.*)\\]';
+	    var match = new RegExp(regex).exec(jQuery(this).attr("name"));
+	    if (match !== null) {
+	      var attr_name = match[1];
+	      self.attributes[attr_name] = jQuery(this).attr("value");
 	    } else {
-
-	      // no updates received, calling the callback with null
-	      callback(null);
+	      // input field must be not for a group story, omitting...
 	    }
-	  },
-	  dataType: "json"
-	});
-      },
+	  });
+	},
 
-      destroy: function(callback) {
-	var post_data = { _method: 'delete', id: self.attributes.id };
+	serialize_attributes: function() {
+	  var serialized_attributes = {};
+	  jQuery.each(self.attributes, function(key, value) {
+	    serialized_attributes[private.resource_name+"["+key+"]"] = value;
+	  });
+	  return serialized_attributes;
+	},
 
-	return jQuery.ajax({
-	  type: 'POST',
-	  url: protected.destroy_path(),
-	  data: post_data,
-	  success: function(json_response) {
-	    if (protected.update_attributes(json_response)) {
-	      callback(self);
-	    } else {
-	      callback(null);
-	    }
-	  },
-	  dataType: "json"
-	});
-      },
+	resource_name: function() { return private.resource_name; }
+      });
 
-      parse_fields: function(div) {
-	var parsed_attributes = {};
-	jQuery(div).find(":input").each(function() {
-	  var regex = private.resource_name + '\\[(.*)\\]';
-	  var match = new RegExp(regex).exec(jQuery(this).attr("name"));
-	  if (match !== null) {
-	    var attr_name = match[1];
-	    self.attributes[attr_name] = jQuery(this).attr("value");
-	  } else {
-	    // input field must be not for a group story, omitting...
-	  }
-	});
-      },
-
-      serialize_attributes: function() {
-	var serialized_attributes = {};
-	jQuery.each(self.attributes, function(key, value) {
-	  serialized_attributes[private.resource_name+"["+key+"]"] = value;
-	});
-	return serialized_attributes;
-      }
-    });
-
-    return self;
-  }
-};
+      return self;
+    }
+  };
 }();
 
