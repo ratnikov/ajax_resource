@@ -10,7 +10,14 @@ Gem::Specification.new do |s|
   s.has_rdoc = false
   s.summary = "Javascript implementation of REST interface"
 
-  s.files = [ 'build/ajax_resource-min.js', 'build/ajax_resource-src.js', 'tasks/ajax_resource.rb' ]
+  files = [ 'tasks/ajax_resource.rb', 'jake.yml']
+  
+  %w(init base semaphore errors new_form).each do |js_file|
+    files << "src/#{js_file}.js"
+  end
+
+  s.files = files
+
   s.require_path = '.'
 
   s.add_dependency 'jake' # requires jake to build javascript library
