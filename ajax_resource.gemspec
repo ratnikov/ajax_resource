@@ -1,4 +1,4 @@
-AJAX_RESOURCE_VERSION = '0.01'
+AJAX_RESOURCE_VERSION = '0.02'
 
 Gem::Specification.new do |s|
   s.name = "ajax_resource"
@@ -12,4 +12,6 @@ Gem::Specification.new do |s|
 
   s.files = [ 'build/ajax_resource-min.js', 'build/ajax_resource-src.js', 'tasks/ajax_resource.rb' ]
   s.require_path = '.'
+
+  s.add_dependency 'jake' # requires jake to build javascript library
 end
