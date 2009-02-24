@@ -19,3 +19,55 @@ That will install the uncompressed library version. If you would like the
 compressed version instead, add <tt>COMPRESS=true</tt> as environment variable:
 
   COMPRESS=true rake ajax:resource_rails:install
+
+= AjaxResource.NewForm
+
+<tt>AjaxResource.NewForm</tt> allows to make a form handle submission and error handling of an AjaxResource.
+
+== Example
+
+Suppose you have a form to create a new <tt>Story</tt> resource, such as:
+
+  <div class="new-story-form">
+    <div class="error" style="display: none"><p>Please review following errors:</p><ul></ul></div>
+
+    <label for="body"><p>Your story:</p></label>
+    <textarea name="story[body]"></textarea></p>
+    <input type="submit" value="Publish" /></p>
+  </div>
+
+  <ul class="story-list">
+  </ul>
+
+In your story.js file you would need to specify the <tt>Story</tt> resource with something like:
+
+  var Story = function() {
+    this.attributes = {}; // to make sure attributes are not undefined
+
+    AjaxResource.Base.extend(this, {
+      resource_name: 'story',
+      singular_path: '/story',
+      plural_path: '/stories', // need to specify plural since it's not storys
+      prefix: '/user' // if the full routing for index something like: /user/stories
+    });
+  };
+
+Finally, hook form functionality into the created form using the <tt>Story</tt> model:
+
+  jQuery(document).ready(function() {
+    jQuery("div.new-story-form").each(function() {
+      var story_form = new AjaxResource.NewForm(this, {
+        on_create: function(model) {
+	  alert("Successfully created a story!");
+
+	  // add the story html to the story list
+	  jQuery('ul.story-list').prepend("<li>"+story.view()+"</li>");
+	},
+	model: Story // specify that to use the Story model
+      });
+    });
+  });
+
+And that's it! If the returned request contains errors (e.g. { "story" : { "errors" : [ [ "Body", "is blank" ] ] } }) 
+it will automatically update the ul in the errors div. If the story was successfully created, it will invoke the 
+on_create callback with the update story passed as parameter.
