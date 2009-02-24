@@ -27,12 +27,10 @@ AjaxResource.NewForm = function(form, options) {
     }
   });
 
-  if (typeof(options.model) !== "undefined") {
-    private.new_model = function() {
-      return new options.model();
-    };
+  if (typeof(options.model_builder) !== "undefined") {
+    private.new_model = options.model_builder;
   } else {
-    throw("Need to specify model for the form");
+    throw("Need to specify model builder for the form");
   }
 
   if (typeof(options.on_create) !== "undefined") {
