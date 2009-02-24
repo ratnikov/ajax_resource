@@ -27,15 +27,16 @@ AjaxTools.read_json = function() {
   if (jQuery(".foo-success-radio").attr("checked")) {
     return jQuery.evalJSON(jQuery(".foo-success").attr("value"));
   } else {
-    console.log("errorz!!!!");
     return jQuery.evalJSON(jQuery(".foo-error").attr("value"));
   }
 }
 
 jQuery(document).ready(function() {
+
+  // using a global to be able to access from firebug
   new_form = new AjaxResource.NewForm("#parse-form", {
     on_create: function(model) {
-      console.log("Created new model:");
+      alert("Create new model.");
       console.log(model);
     },
     model: Foo

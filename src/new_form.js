@@ -52,7 +52,6 @@ AjaxResource.NewForm = function(form, options) {
   jQuery.extend(this, { 
     parse: function(model) {
       var parsed_attributes = {};
-      console.log(model);
       jQuery(private.form).find(":input").each(function() {
 	var regex = model.resource_name() + '\\[(.*)\\]';
 	var match = new RegExp(regex).exec(jQuery(this).attr("name"));
