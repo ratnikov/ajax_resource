@@ -11,3 +11,5 @@ packages:
     - init
     - base
     - semaphore
+    - errors
+    - new_form
