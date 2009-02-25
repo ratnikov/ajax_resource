@@ -24,4 +24,29 @@ jQuery(document).ready(function() {
     model._id = null;
     equals(model.default_view(), 'funky_foo (id: null)');
   });
+
+
+  module("#html");
+  test("Should return default view by default", function() {
+    var view = new AjaxResource.View();
+    view.default_view = function() { return 'default'; }
+    equals(view.html(), 'default', "Should use the default.");
+
+    view._html = 'hello';
+    equals(view.html(), 'hello', "should use the specified html if there exists.");
+  });
+
+  module("#set_custom");
+  test("Should update what #html returns", function() {
+    view = new AjaxResource.View();
+    view.default_view = function() { return 'default'; }
+    equals(view.html(), 'default', "should use the default html until customized");
+
+    view.set_custom("<p>foo</p>");
+    equals(view.html(), "<p>foo</p>", "Should return customized version after customization");
+
+    view.set_custom(null);
+    equals(view.html(), 'default', "Should fallback to default view if customized to be null");
+  });
+
 });
