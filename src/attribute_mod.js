@@ -44,5 +44,5 @@ AjaxResource.AttributeMod.prototype.update_attributes = function(json) {
   }
 
   // use all other properties as attributes
-  this._attributes = json;
+  jQuery.extend(this._attributes, json);
 };

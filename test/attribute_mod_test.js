@@ -6,11 +6,16 @@ jQuery(document).ready(function() {
     equals(0, mod.errors().length);
   });
 
-  module("#update_attributes");
+  module("#update_attributes", {
+    setup : function() {
+      mod = new AjaxResource.AttributeMod();
+    }
+  });
+
   test("Should parse attributes correctly", function() {
     var json = { "id" : 5, "bar" : "woohoo" };
     mod.update_attributes(json);
-    same(json, mod.attributes(), "Should have parsed attributes correctly.");
+    same(mod.attributes(), json, "Should have parsed attributes correctly.");
     equals(false, mod.has_errors(), "Should not have any errors");
   });
 
@@ -18,8 +23,16 @@ jQuery(document).ready(function() {
     var errors = [ [ "Foo", "is not awesome enough" ] ];
     var json = { "id" : 5, "errors" : errors };
     mod.update_attributes(json);
-    same({ "id" : 5 }, mod.attributes(), "Should have passed the attributes.");
+    same(mod.attributes(), { id : 5 }, "Should have passed the attributes.");
     same(errors, mod.errors(), "Parsed errors should match.");
+  });
+
+  test("Should mantain old attributes unless overriden", function() {
+    mod._attributes = { foo : 'foo', bar : 'bar' };
+    mod.update_attributes({ foo : 'foobar' });
+
+    equals(mod.attributes().foo, 'foobar', "Should update specified attribute");
+    equals(mod.attributes().bar, 'bar', "Should mantain the old attribute");
   });
 
   module("#has_errors");
