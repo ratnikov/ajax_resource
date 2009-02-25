@@ -114,3 +114,28 @@ AjaxResource.Base.prototype.update = function(success_callback) {
     dataType: 'json'
   });
 };
+
+AjaxResource.Base.prototype.destroy = function(success_callback) {
+
+  // sanity check
+  if (this.is_new()) {
+    throw("Cannot destroy a new record");
+  }
+
+  var post_data = { _method : 'delete' };
+  var resource = this;
+
+  return jQuery.ajax({
+    type : 'POST',
+    url : this.member_path(this.id()),
+    data : post_data,
+    success: function(json) {
+      if (resource.parse_json(json)) {
+	success_callback(resource);
+      } else {
+	// do nothing on error
+      }
+    },
+    dataType: 'json'
+  });
+};
