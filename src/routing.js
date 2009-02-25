@@ -1,3 +1,15 @@
+
+/*
+ * Creates a new routing object. 
+ *
+ * Following options are required:
+ *
+ *  - controller: the name of the controller to use for routing.
+ *
+ * Following options are available:
+ *
+ *  - prefix: prefix to use by the route. By default is ''
+ */
 AjaxResource.Routing = function(spec) {
   if (typeof spec.controller !== "undefined") {
     this._controller_name = spec.controller;
