@@ -62,4 +62,12 @@ jQuery(document).ready(function() {
     ok(model.parse_json({funky_resource : { foo : 'foo', html : '<p>foo</p>' } }), "Should parse json");
     equals(model.html(), "<p>foo</p>", "Should use specified html as model's html");
   });
+
+  test("Should un-customize html if not specified", function() {
+    model.set_custom("hello world");
+    equals(model.html(), "hello world");
+
+    ok(model.parse_json({ funky_resource : { } }), "Should parse the json");
+    equals(model.html(), model.default_view(), "Should use the default view even though previously customized");
+  });
 });

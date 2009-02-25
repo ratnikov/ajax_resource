@@ -47,11 +47,12 @@ AjaxResource.Base.prototype.parse_json = function(json) {
   if (typeof resource_json !== "undefined") {
 
     if (typeof resource_json.html !== "undefined") {
-
       // set to use custom html if specified
       this.set_custom(resource_json.html);
       delete resource_json.html;
     } else {
+      // otherwise set to use default html
+      this.set_custom(null);
     }
 
     // update the attributes with the resource_json
