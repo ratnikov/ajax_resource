@@ -33,7 +33,7 @@ AjaxResource.AttributeMod.prototype.is_new = function() {
   return this.id() === null;
 };
 
-AjaxResource.AttributeMod.prototype.parse_json = function(json) {
+AjaxResource.AttributeMod.prototype.update_attributes = function(json) {
   if (typeof(json.errors) !== "undefined") {
     this._errors = json.errors;
     delete json.errors;

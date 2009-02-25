@@ -6,10 +6,10 @@ jQuery(document).ready(function() {
     equals(0, mod.errors().length);
   });
 
-  module("#parse_json");
+  module("#update_attributes");
   test("Should parse attributes correctly", function() {
     var json = { "id" : 5, "bar" : "woohoo" };
-    mod.parse_json(json);
+    mod.update_attributes(json);
     same(json, mod.attributes(), "Should have parsed attributes correctly.");
     equals(false, mod.has_errors(), "Should not have any errors");
   });
@@ -17,7 +17,7 @@ jQuery(document).ready(function() {
   test("Should parse errors", function() {
     var errors = [ [ "Foo", "is not awesome enough" ] ];
     var json = { "id" : 5, "errors" : errors };
-    mod.parse_json(json);
+    mod.update_attributes(json);
     same({ "id" : 5 }, mod.attributes(), "Should have passed the attributes.");
     same(errors, mod.errors(), "Parsed errors should match.");
   });
