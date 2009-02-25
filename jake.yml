@@ -7,9 +7,19 @@ packer:
   base62:       true
 
 packages:
-  ajax_resource:
+  base:
     - init
+    - attribute_mod
+    - routing
+    - view
     - base
+
+  utils:
     - semaphore
-    - errors
     - new_form
+    - errors
+
+bundles:
+  ajax_resource:
+    - base
+    - utils
