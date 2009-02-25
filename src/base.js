@@ -1,6 +1,6 @@
 
 AjaxResource.Base = function(spec) {
-  jQuery.extend(this, new AjaxResource.AttributeMod());
+  AjaxResource.AttributeMod.apply(this);
 
   if (typeof spec.resource !== "undefined") {
     this._resource_name = spec.resource;
@@ -21,7 +21,7 @@ AjaxResource.Base.prototype._assign_routes = function(spec) {
     route_spec.controller = this.resource_name() + 's';
   }
 
-  jQuery.extend(this, new AjaxResource.Routing(route_spec));
+  AjaxResource.Routing.apply(this, [ route_spec ]);
 };
 
 jQuery.extend(AjaxResource.Base.prototype, AjaxResource.AttributeMod.prototype);
