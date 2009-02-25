@@ -111,4 +111,42 @@ jQuery(document).ready(function() {
     ajax_success({});
     ok(!callback_invoked, "Should not invoke callback if it's missing the resource name");
   });
+
+  module("#update");
+
+  test("Should make a PUT member_path ajax request and parse its returns", function() {
+    model.attributes().foo = 'foo';
+    model.attributes().id = 5;
+
+    var callback_invoked = false;
+    var callback = function(updated_model) { 
+      equals(updated_model, model, "Should reference same model");
+      callback_invoked = true;
+    };
+
+    equals(model.update(callback), 'ajax_request', "Should return the ajax request object");
+
+    ok(typeof ajax_options !== "undefined", "Should have made an ajax request");
+
+    equals(ajax_options.type, "POST", "Should use POST request");
+    equals(ajax_options.url, model.member_path(model.id()), "Should use member path with model id as url");
+    equals(ajax_options.dataType, "json", "Should expect json as response");
+
+    equals(ajax_options.data._method, 'put', "Should specify to use 'put' method for rails resource to recognize");
+    delete ajax_options.data._method;
+    same(ajax_options.data, model.serialized_attributes(), "Should use serialized attributes as rest of posted data");
+
+    var ajax_success = ajax_options.success;
+    ok(typeof ajax_success !== "undefined", "Should specify an ajax success callback");
+
+    ok(!callback_invoked, "Should not have invoked callback just yet");
+
+    var response = {};
+    response[model.resource_name()] = { id : 5, foo : 'fooism', html : 'html' };
+    ajax_success(response);
+
+    ok(callback_invoked, "Should invoke success callback");
+    same(model.attributes().foo, 'fooism', "Should have updated attributes");
+    equals(model.html(), "html", "Should have updated html of the model.");
+  });
 });

@@ -66,12 +66,43 @@ AjaxResource.Base.prototype.parse_json = function(json) {
 };
 
 AjaxResource.Base.prototype.create = function(success_callback) {
+
+  // sanity check
+  if (!this.is_new()) {
+    throw("Cannot create an existing record");
+  }
+
   var post_data = jQuery.extend({ _method : 'post' }, this.serialized_attributes());
   var resource = this;
 
   return jQuery.ajax({
     type: 'POST',
     url: this.collection_path(),
+    data: post_data,
+    success: function(json) {
+      if (resource.parse_json(json)) {
+	success_callback(resource);
+      } else {
+	// do nothing on error
+      }
+    },
+    dataType: 'json'
+  });
+};
+
+AjaxResource.Base.prototype.update = function(success_callback) {
+
+  // sanity check
+  if (this.is_new()) {
+    throw("Cannot update a new record");
+  }
+
+  var post_data = jQuery.extend({ _method : 'put' }, this.serialized_attributes());
+  var resource = this;
+
+  return jQuery.ajax({
+    type: 'POST',
+    url : this.member_path(this.id()),
     data: post_data,
     success: function(json) {
       if (resource.parse_json(json)) {
