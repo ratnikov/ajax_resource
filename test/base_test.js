@@ -7,6 +7,7 @@ jQuery(document).ready(function() {
 
   jQuery.ajax = function(options) {
     ajax_options = options;
+    return 'ajax_request';
   };
 
   test("Truthitest", function() {
@@ -69,5 +70,45 @@ jQuery(document).ready(function() {
 
     ok(model.parse_json({ funky_resource : { } }), "Should parse the json");
     equals(model.html(), model.default_view(), "Should use the default view even though previously customized");
+  });
+
+  module("#create");
+
+  test("Should make an ajax request and parse its returns", function() {
+    model.attributes().foo = 'foo';
+    model.attributes().bar = 'foobar';
+
+    var callback_invoked = false;
+    var callback = function(updated_model) {
+      equals(updated_model, model, "Should reference the same model");
+      callback_invoked = true;
+    };
+
+    equals(model.create(callback), 'ajax_request', "Should return the ajax request object");
+
+    ok(typeof ajax_options !== "undefined", "Should have made an ajax request.");
+
+    equals(ajax_options.type, 'POST', "Should make a post request");
+    equals(ajax_options.url, model.collection_path(), "Should use the collection path for the url to post to");
+    equals(ajax_options.dataType, "json", "Should set that a JSON response is expected");
+
+    equals(ajax_options.data._method, 'post', "Should use the rails faking of post mechanism to specify it's a post request");
+    delete ajax_options.data._method; // remove to get access to other data stuff
+    same(ajax_options.data, model.serialized_attributes(), "The rest of the post data should be the serialized attributes of the model");
+
+    var ajax_success = ajax_options.success;
+    ok(typeof(ajax_success) !== "undefined", "Should specify a success ajax callback");
+
+    ok(!callback_invoked, "Should not have invoked callback yet.");
+
+    var response = {};
+    response[model.resource_name()] = { id : 5, foo : 'fooism', errors : 'Bad bar' };
+    ajax_success(response);
+
+    ok(callback_invoked, "Should have invoked callback now.");
+
+    callback_invoked = false;
+    ajax_success({});
+    ok(!callback_invoked, "Should not invoke callback if it's missing the resource name");
   });
 });

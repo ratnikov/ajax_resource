@@ -64,3 +64,22 @@ AjaxResource.Base.prototype.parse_json = function(json) {
     return false;
   }
 };
+
+AjaxResource.Base.prototype.create = function(success_callback) {
+  var post_data = jQuery.extend({ _method : 'post' }, this.serialized_attributes());
+  var resource = this;
+
+  return jQuery.ajax({
+    type: 'POST',
+    url: this.collection_path(),
+    data: post_data,
+    success: function(json) {
+      if (resource.parse_json(json)) {
+	success_callback(resource);
+      } else {
+	// do nothing on error
+      }
+    },
+    dataType: 'json'
+  });
+};
