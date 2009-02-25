@@ -36,4 +36,33 @@ jQuery(document).ready(function() {
 
     equals(true, mod.has_errors());
   });
+
+  module("#id");
+  test("Should return the id attribute", function() {
+    mod._attributes.id = 5;
+    equals(mod.id(), 5, "Should match the specified attribute id");
+
+    mod._attributes.id = "asdf";
+    equals(mod.id(), "asdf");
+  });
+
+  test("Should return null if the id attribute is not set", function() {
+    delete mod._attributes.id;
+    equals(null, mod.id(), "Should be null if not set.");
+  });
+
+  module("#new_record");
+
+  test("Should return false if there is an id attribute", function() {
+    mod._attributes.id = '5';
+    equals(false, mod.is_new());
+  });
+
+  test("Should return true if there is no id attribute or it is null", function() {
+    delete mod._attributes.id;
+    equals(true, mod.is_new(), "Should be true if there is no id");
+
+    mod._attributes.id = null;
+    equals(true, mod.is_new(), "Should be true if the id is null");
+  });
 });
