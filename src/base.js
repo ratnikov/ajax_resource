@@ -26,6 +26,7 @@ AjaxResource.Base.prototype._assign_routes = function(spec) {
 
 jQuery.extend(AjaxResource.Base.prototype, AjaxResource.AttributeMod.prototype);
 jQuery.extend(AjaxResource.Base.prototype, AjaxResource.Routing.prototype);
+jQuery.extend(AjaxResource.Base.prototype, AjaxResource.View.prototype);
 
 AjaxResource.Base.prototype.resource_name = function() {
   return this._resource_name;
@@ -38,4 +39,27 @@ AjaxResource.Base.prototype.serialized_attributes = function() {
     serialized[base.resource_name() + '[' + key + ']'] = value;
   });
   return serialized;
+};
+
+AjaxResource.Base.prototype.parse_json = function(json) {
+  var resource_json = json[this.resource_name()];
+
+  if (typeof resource_json !== "undefined") {
+
+    if (typeof resource_json.html !== "undefined") {
+
+      // set to use custom html if specified
+      this.set_custom(resource_json.html);
+      delete resource_json.html;
+    } else {
+    }
+
+    // update the attributes with the resource_json
+    this.update_attributes(resource_json);
+
+    return true;
+  } else {
+    // if no resource json was parsed, return false
+    return false;
+  }
 };
