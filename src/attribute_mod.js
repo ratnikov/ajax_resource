@@ -1,33 +1,34 @@
 AjaxResource.AttributeMod = function() {
-  var _attributes = {};
-  var _errors = [];
+  this._attributes = {};
+  this._errors = [];
+};
 
-  this.attributes = function() {
-    return _attributes;
-  };
+AjaxResource.AttributeMod.prototype.attributes = function() {
+  return this._attributes;
+};
 
-  this.errors = function() {
-    return _errors;
-  };
+AjaxResource.AttributeMod.prototype.errors = function() {
+  return this._errors;
+};
 
-  this.has_errors = function() {
-    return this.errors().length !== 0;
-  };
+AjaxResource.AttributeMod.prototype.has_errors = function() {
+  return this.errors().length !== 0;
+};
 
-  this.valid = function() {
-    return !this.has_errors();
-  };
+AjaxResource.AttributeMod.prototype.valid = function() {
+  return !this.has_errors();
+};
 
-  this.parse_json = function(json) {
-    if (typeof(json.errors) !== "undefined") {
-      _errors = json.errors;
-      delete json.errors;
-    } else {
-      // if there're no errors, emptying out errors
-      _errors = [];
-    }
+AjaxResource.AttributeMod.prototype.parse_json = function(json) {
+  if (typeof(json.errors) !== "undefined") {
+    this._errors = json.errors;
+    delete json.errors;
+  } else {
 
-    // use all other properties as attributes
-    _attributes = json;
-  };
+    // if there are no errors reported by json, emptying out errors
+    this._errors = [];
+  }
+
+  // use all other properties as attributes
+  this._attributes = json;
 };
