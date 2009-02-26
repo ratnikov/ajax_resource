@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   files = [ 'tasks/ajax_resource.rb', 'jake.yml']
   
-  %w(init base semaphore errors new_form).each do |js_file|
+  %w(init view attribute_mod routing base semaphore errors new_form).each do |js_file|
     files << "src/#{js_file}.js"
   end
 
