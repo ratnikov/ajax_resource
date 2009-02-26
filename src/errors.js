@@ -1,44 +1,53 @@
 
 AjaxResource.Errors = function(selector) {
-  var private = { };
-  jQuery(document).ready(function() {
-    private.div = jQuery(jQuery.unique(jQuery(selector).find('div.error')));
-    private.ul = private.div.find("ul");
+  this._error_div = jQuery(selector).find('div.error');
+};
+
+AjaxResource.Errors.prototype.error_div = function() {
+  return this._error_div;
+};
+
+AjaxResource.Errors.prototype.ul = function() {
+  return this.error_div().find("ul");
+};
+
+AjaxResource.Errors.prototype.append = function(error) {
+  var self = this;
+  jQuery.each(errors, function() {
+    if (this.length == 2) {
+      var desc = this[0];
+      var msg = this[1];
+    } else {
+      throw "Unsupported error format for: "+this;
+    }
+
+    var full_message;
+    if (desc !== 'base') {
+      full_message = desc + ' ' + msg;
+    } else {
+      // Use only the error message for base errors
+      full_message = msg;
+    }
+
+    self.ul().append("<li>" + full_message + "</li>");
   });
+};
 
-  this.clear = function() {
-    private.ul.html("");
-    this.hide();
-  };
+AjaxResource.Errors.prototype.clear = function() {
+  this.ul().html("");
+  this.hide();
+};
 
-  this.append = function(errors) {
-    jQuery.each(errors, function() {
-      // assuming the errors are in the [ desc, message ] format
-      if (this.length == 2) {
-	var desc = this[0];
-	var msg = this[1];
-      } else {
-	throw "Util.Errors: Unsupported error format";
-      }
+AjaxResource.Errors.prototype.set = function(errors) {
+  this.clear();
+  this.append(errors);
+  this.show();
+};
 
-      var full_message;
-      if (desc !== 'base') {
-	full_message = desc+" "+msg;
-      } else {
-	// if it's a base error, add just the error message
-	full_message = msg;
-      }
+AjaxResource.Errors.hide = function() {
+  this.error_div().hide();
+};
 
-      private.ul.append("<li>"+full_message+"</li>");
-    });
-  };
-
-  this.set = function(errors) {
-    this.clear();
-    this.append(errors);
-    this.show();
-  };
-
-  this.hide = function() { private.div.hide(); };
-  this.show = function() { private.div.show(); };
+AjaxResource.Errors.show = function() {
+  this.error_div().show();
 };
