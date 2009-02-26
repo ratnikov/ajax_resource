@@ -1,59 +1,49 @@
 
-AjaxResource.Semaphore = function() {
-  return {
-    init: function(options) {
-      var private = {};
+AjaxResource.Semaphore = function(options) {
+  if (typeof options === "undefined") {
+    options = {};
+  }
 
-      private.on_restricted = options.on_restricted;
-      private.on_available = options.on_available;
+  this._value = 0;
 
-      private.value = 0;
-      private.restricted = false;
+  this._on_available = options.on_available;
+  this._on_unavailable = options.on_unavailable;
+};
 
-      var self = {
-	inc: function() {
-	  if (self.available() && (typeof(private.on_restricted) !== "undefined")) {
-	    private.on_restricted();
-	  }
+AjaxResource.Semaphore.prototype.dec = function() {
+  if (this._value > 0) {
+    this._value -= 1;
 
-	  private.value++;
-	},
+    if (this.available()) {
+      this.on_available();
+    } 
 
-	dec: function() {
-	  private.value--;
+  } else {
+    // do nothing since value should not go below zero
+  }
+};
 
-	  if (self.available() && (typeof(private.on_available) !== "undefined")) {
-	    private.on_available();
-	  }
-	},
+AjaxResource.Semaphore.prototype.inc = function() {
+  var was_available = this.available();
+  this._value += 1;
 
-	available: function() { 
-	  if (!private.restricted) {
-	    return private.value === 0;
-	  } else {
-	    return false;
-	  }
-	},
+  if (was_available && !this.available()) {
+    this.on_unavailable();
+  }
+};
 
-	/*
-	 * Resets the semaphore to be available.
-	 */
-	reset: function() { private.value = 0; private.restricted = false; },
+AjaxResource.Semaphore.prototype.on_available = function() {
+  if (typeof this._on_available !== "undefined") {
+    this._on_available();
+  }
+};
 
-	/*
-	 * Restricts semaphore to never be available unless reset.
-	 * The semaphore is still capable of inc and decrementing.
-	 */
-	restrict: function() { private.restricted = true; },
+AjaxResource.Semaphore.prototype.on_unavailable = function() {
+  if (typeof this.on_unavailable !== "undefined") {
+    this._on_unavailable();
+  }
+};
 
-	/*
-	 * Unrestricts the semaphore.
-	 */
-	unrestrict: function() { private.restricted = false; }
-      };
-
-      return self;
-    }
-  };
-}();
-
+AjaxResource.Semaphore.prototype.available = function() {
+  return this._value === 0;
+};
