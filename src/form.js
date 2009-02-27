@@ -75,7 +75,7 @@ AjaxResource.Form.prototype.submit = function() {
   var self = this;
   if (this.semaphore().available()) {
     // update the model from the attributes within the form
-    this.model().parse_json(form.parse_fields());
+    this.model().parse_json(this.parse_fields());
 
     this.model().save(function(saved_model) {
       if (saved_model.valid()) {

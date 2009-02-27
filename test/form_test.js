@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
   var model = {};
-  form = new AjaxResource.Form('.form', {
+  var form = new AjaxResource.Form('.form', {
     model : model
   });
 
@@ -125,7 +125,7 @@ jQuery(document).ready(function() {
     equals(on_save_model, saved_model, "Should have invoked on_save callback with model specified"); on_save_model = null;
     ok(errors.cleared, "Should have cleared the errors in a successful save"); errors.cleared = false;
 
-    var saved_model = { valid: function() { return false; }, errors: function() { return [ [ "foo", "is not awesome enough" ]] } };
+    saved_model = { valid: function() { return false; }, errors: function() { return [ [ "foo", "is not awesome enough" ]]; } };
     save_callback(saved_model);
     ok(semaphore_decremented, "Should decrement semaphore for error request as well"); semaphore_decremented = false;
     equals(on_save_model, null, "Should not invoke on_save callback, since the model contained errors");
