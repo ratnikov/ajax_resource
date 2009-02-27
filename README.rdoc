@@ -58,7 +58,7 @@ Finally, hook form functionality into the created form using the <tt>Story</tt> 
   jQuery(document).ready(function() {
     jQuery("div.new-story-form").each(function() {
       var form = this;
-      var story_form = new AjaxResource.NewForm(this, {
+      var story_form = new AjaxResource.Form(this, {
         on_create: function(model) {
 	  alert("Successfully created a story!");
 
