@@ -17,9 +17,9 @@ To install, run the <tt>ajax_resource:rails:install</tt> task:
 
 This will install <tt>ajax_resource-src.js</tt> and <tt>ajax_resource-min.js</tt> to <tt>Rails.root/public/javascripts</tt> directory.
 
-= AjaxResource.NewForm
+= AjaxResource.Form
 
-<tt>AjaxResource.NewForm</tt> allows to make a form handle submission and error handling of an AjaxResource.
+<tt>AjaxResource.Form</tt> allows to make a form handle submission and error handling of an AjaxResource.
 
 == Example
 
@@ -43,11 +43,6 @@ In your story.js file you would need to specify the <tt>Story</tt> resource with
 
     // initialize the AjaxResource.Base functionality
     AjaxResource.Base.apply(this, [ { resource : 'story', controller : 'stories' } ]);
-      resource_name: 'story',
-      singular_path: '/story',
-      plural_path: '/stories', // need to specify plural since it's not storys
-      prefix: '/user' // if the full routing for index something like: /user/stories
-    });
   };
 
   // include the AjaxResource.Base functionality
