@@ -16,7 +16,7 @@ packages:
 
   utils:
     - semaphore
-    - new_form
+    - form
     - errors
 
 bundles:
