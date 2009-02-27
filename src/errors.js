@@ -11,7 +11,7 @@ AjaxResource.Errors.prototype.ul = function() {
   return this.error_div().find("ul");
 };
 
-AjaxResource.Errors.prototype.append = function(error) {
+AjaxResource.Errors.prototype.append = function(errors) {
   var self = this;
   jQuery.each(errors, function() {
     if (this.length == 2) {
