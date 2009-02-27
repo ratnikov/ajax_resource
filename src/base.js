@@ -115,6 +115,14 @@ AjaxResource.Base.prototype.update = function(success_callback) {
   });
 };
 
+AjaxResource.Base.prototype.save = function(callback) {
+  if (this.is_new()) {
+    return this.create(callback);
+  } else {
+    return this.update(callback);
+  }
+};
+
 AjaxResource.Base.prototype.destroy = function(success_callback) {
 
   // sanity check

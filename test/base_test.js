@@ -150,7 +150,38 @@ jQuery(document).ready(function() {
     equals(model.html(), "html", "Should have updated html of the model.");
   });
 
-  module("#destroy");
+  module("#save", {
+    setup : function() {
+      model = new AjaxResource.Base({ resource: 'funky_foo' });
+    }
+  });
+
+  test("Should call #create if model.is_new() returns true", function() {
+    model.is_new = function() { return true; };
+
+    var create_callback = null;
+    model.create = function(callback) { create_callback = callback; };
+
+    var save_callback = function() { };
+    model.save(save_callback);
+    equals(create_callback, save_callback, "Should have invoked #create and forwarded the callback");
+  });
+
+  test("Should call #update if model.is_new() is false", function() {
+    model.is_new = function() { return false; };
+    
+    var update_callback = null;
+    model.update = function(callback) { update_callback = callback; };
+
+    model.save("save callback");
+    equals(update_callback, "save callback", "Should have invoked #update and forwarded the callback");
+  });
+
+  module("#destroy", {
+    setup: function() {
+      model = new AjaxResource.Base({ resource : 'funky_resource' });
+    }
+  });
   test("Should make a DELETE member_path ajax request and parse its returns", function() {
     model.attributes().foo = 'foo';
     model.attributes().id = 5;
