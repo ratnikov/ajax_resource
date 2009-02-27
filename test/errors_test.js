@@ -22,4 +22,21 @@ jQuery(document).ready(function() {
     matches_only(inner_ul, '#inner-ul', "Should include the inner ul");
     matches_only((new AjaxResource.Errors('#main')).ul(), [ '#inner-ul', '#main-ul', ], "Should include both inner and main uls");
   });
+
+  module("UI effects", {
+    setup : function() {
+      inner_errors = new AjaxResource.Errors("#inner-div");
+    }
+  });
+
+  var inner_errors = null;
+
+  test("#hide and #show should hide and show the error div", function() {
+    ok(inner_errors.error_div().is(":visible"), "Error div should be visible at beginning of test");
+    inner_errors.hide();
+    ok(inner_errors.error_div().is(":hidden"), "Error div should become hidden after #hide is invoked");
+
+    inner_errors.show();
+    ok(inner_errors.error_div().is(":visible"), "Error div should become visible after #show is invoked");
+  });
 });

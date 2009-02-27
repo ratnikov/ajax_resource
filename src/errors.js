@@ -44,10 +44,10 @@ AjaxResource.Errors.prototype.set = function(errors) {
   this.show();
 };
 
-AjaxResource.Errors.hide = function() {
+AjaxResource.Errors.prototype.hide = function() {
   this.error_div().hide();
 };
 
-AjaxResource.Errors.show = function() {
+AjaxResource.Errors.prototype.show = function() {
   this.error_div().show();
 };
