@@ -39,7 +39,7 @@ AjaxResource.Semaphore.prototype.on_available = function() {
 };
 
 AjaxResource.Semaphore.prototype.on_unavailable = function() {
-  if (typeof this.on_unavailable !== "undefined") {
+  if (typeof this._on_unavailable !== "undefined") {
     this._on_unavailable();
   }
 };

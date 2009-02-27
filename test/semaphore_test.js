@@ -42,4 +42,14 @@ jQuery(document).ready(function() {
     semaphore.inc();
     ok(!semaphore.available(), "Should ignore that we decremented during being available");
   });
+  
+  test("#on_unavailable", function() {
+    var unavailable_invoked = false;
+    var semaphore = new AjaxResource.Semaphore({
+      on_unavailable: function() { unavailable_invoked = true; }
+    });
+
+    semaphore.on_unavailable();
+    ok(unavailable_invoked, "Should have been invoked");
+  });
 });
