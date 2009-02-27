@@ -25,7 +25,7 @@ This will install <tt>ajax_resource-src.js</tt> and <tt>ajax_resource-min.js</tt
 
 Suppose you have a form to create a new <tt>Story</tt> resource, such as:
 
-  <div class="new-story-form">
+  <div class="new-story-form { 'author_id' : 5 }">
     <div class="error" style="display: none"><p>Please review following errors:</p><ul></ul></div>
 
     <label for="body"><p>Your story:</p></label>
@@ -38,10 +38,11 @@ Suppose you have a form to create a new <tt>Story</tt> resource, such as:
 
 In your story.js file you would need to specify the <tt>Story</tt> resource with something like:
 
-  var Story = function() {
-    this.attributes = {}; // to make sure attributes are not undefined
+  var Story = function(spec) {
+    this._author_id = spec.author_id;
 
-    AjaxResource.Base.extend(this, {
+    // initialize the AjaxResource.Base functionality
+    AjaxResource.Base.apply(this, [ { resource : 'story', controller : 'stories' } ]);
       resource_name: 'story',
       singular_path: '/story',
       plural_path: '/stories', // need to specify plural since it's not storys
@@ -49,18 +50,31 @@ In your story.js file you would need to specify the <tt>Story</tt> resource with
     });
   };
 
+  // include the AjaxResource.Base functionality
+  jQuery.extend(Story.prototype, AjaxResource.Base.prototype);
+
+  // override the prefix to be 'user/authors/:author_id'
+  Story.prototype.prefix = function() {
+    return '/user/authors/' + this._author_id;
+  };
+
 Finally, hook form functionality into the created form using the <tt>Story</tt> model:
 
   jQuery(document).ready(function() {
     jQuery("div.new-story-form").each(function() {
+      var form = this;
       var story_form = new AjaxResource.NewForm(this, {
         on_create: function(model) {
 	  alert("Successfully created a story!");
 
 	  // add the story html to the story list
-	  jQuery('ul.story-list').prepend("<li>"+story.view()+"</li>");
+	  jQuery('ul.story-list').prepend("<li>"+story.html()+"</li>");
 	},
-	model: Story // specify that to use the Story model
+	model: function() { 
+	  // build a new story using the author_id specified in metadata of this form
+	  // (using jQuery metadata plugin)
+	  return new Story(form.metadata().author_id);
+	}
       });
     });
   });
