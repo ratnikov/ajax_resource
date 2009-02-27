@@ -1,4 +1,4 @@
-AJAX_RESOURCE_VERSION = '0.02'
+AJAX_RESOURCE_VERSION = '0.03'
 
 Gem::Specification.new do |s|
   s.name = "ajax_resource"
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   files = [ 'tasks/ajax_resource.rb', 'jake.yml']
   
-  %w(init view attribute_mod routing base semaphore errors new_form).each do |js_file|
+  %w(init view attribute_mod routing base semaphore errors form).each do |js_file|
     files << "src/#{js_file}.js"
   end
 
