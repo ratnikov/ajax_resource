@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <script src="../lib/jquery-1.3.1.js"></script>
+
+    <script src="../src/init.js"></script>
+    <script src="../src/util.js"></script>
+    <script src="../src/errors.js"></script>
+    <script src="../src/semaphore.js"></script>
+    <script src="../src/form.js"></script>
+
+    <script src="../lib/testrunner.js"></script>
+    <script src="test_helper.js"></script>
+    <link rel="stylesheet" href="../lib/testsuite.css" />
+  </head>
+  <body>
+    <script src="form_test.js"></script>
+
+    <h1>AjaxResource.Form test</h1>
+    <h2 id="banner"></h2>
+    <h2 id="userAgent"></h2>
+
+    <ol id="tests"></ol>
+
+    <div id="main">
+      <p>Foo form:</p>
+      <div class="form" id="form">
+	<p><input type="text" name="foo[bar]" /></p>
+	<p><input type="text" name="bar[zeta]" /></p>
+	<p><input type="submit" value="Submit!" id="submit-button" /></p>
+      </div>
+    </div>
+  </body>
+</html>
