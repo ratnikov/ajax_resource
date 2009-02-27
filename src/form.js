@@ -3,6 +3,7 @@ AjaxResource.Form = function(form, options) {
   var self = this;
 
   this._form = jQuery(form);
+  this._error_panel = new AjaxResource.Errors(form);
 
   if (typeof options === "undefined") {
     options = {};
@@ -32,8 +33,16 @@ AjaxResource.Form.prototype.submit_button = function() {
   return this.form().find(":submit");
 };
 
-AjaxResource.Form.prototype.model = function() {
-  return this._model;
+AjaxResource.Form.prototype.error_panel = function(){ 
+  return this._error_panel;
+}
+
+AjaxResource.Form.prototype.fetch_model = function() {
+  if (jQuery.isFunction(this._model)) {
+    return this._model();
+  } else { 
+    return this._model;
+  }
 };
 
 AjaxResource.Form.prototype.semaphore = function() {
@@ -74,18 +83,20 @@ AjaxResource.Form.prototype.parse_fields = function() {
 AjaxResource.Form.prototype.submit = function() {
   var self = this;
   if (this.semaphore().available()) {
+    var model = this.fetch_model();
+
     // update the model from the attributes within the form
-    this.model().parse_json(this.parse_fields());
+    model.parse_json(this.parse_fields());
 
-    this.model().save(function(saved_model) {
+    model.save(function(saved_model) {
       if (saved_model.valid()) {
-	// if the model is valid, clear errors and execute the on_saved callback
+	// if the model is valid, clear error_panel and execute the on_saved callback
 
-	self.errors().clear();
+	self.error_panel().clear();
 	self.on_save(saved_model);
       } else {
-	// if returned model contained errors, report them
-	self.errors().set(saved_model.errors());
+	// if returned model contained error_panel, report them
+	self.error_panel().set(saved_model.errors());
       }
 
       // the request was handled, decrease the semaphore

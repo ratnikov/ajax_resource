@@ -24,6 +24,20 @@ jQuery(document).ready(function() {
     matches_only(form.submit_button(), '#submit-button', "Should match the correct button");
   });
 
+  test("#fetch_model should return model object if 'model' option is not a function", function() {
+    var model = {};
+    equals((new AjaxResource.Form("foo", { model : model })).fetch_model(), model, "Should return the specified object itself");
+  });
+
+  test ("#fetch_model should invoke model function and return the returns if model options is a function", function() {
+    var model_builder = function() { return "foo"; };
+    equals((new AjaxResource.Form("foo", { model : model_builder })).fetch_model(), "foo", "Should return the builder's return");
+  });
+
+  test("#error_panel should return correctly specified error object", function() {
+    matches_only(form.error_panel().error_div(), "#form-error", "Should only locate error div within the form");
+  });
+
   test("Clicking submit button should attempt to submit the form", function() {
     var submitted = false;
     form.submit = function() { submitted = true; };
@@ -111,7 +125,7 @@ jQuery(document).ready(function() {
 	errors.cleared = true;
       }
     };
-    form.errors = function() { return errors; };
+    form.error_panel = function() { return errors; };
 
     // submit the form
     form.submit();
