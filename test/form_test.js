@@ -58,6 +58,22 @@ jQuery(document).ready(function() {
     same(form.parse_fields(), { foo : { bar : "foobar" }, bar : { zeta : "zetar" } }, "Should parse the input fields correct");
   });
 
+  test("Should correctly initialize semaphore", function() {
+    var semaphore = form._semaphore;
+    ok(typeof semaphore !== "undefined", "Should define semaphore");
+
+    var submit_value = form.submit_button().val();
+    equals(form.submit_button().attr("disabled"), false, "The submit button should not be disabled");
+
+    semaphore.on_unavailable();
+    equals(form.submit_button().attr("disabled"), true, "Should disable the submit button");
+    equals(form.submit_button().val(), "Processing...", "Should change the button inscription");
+
+    semaphore.on_available();
+    equals(form.submit_button().attr("disabled"), false, "Should re-enable the button");
+    equals(form.submit_button().val(), submit_value, "Should restore original button value");
+  });
+
   module("#submit", {
     setup : function() {
       model = {

@@ -17,7 +17,33 @@ AjaxResource.Form = function(form, options) {
 
   this._on_save = options.on_save;
 
-  this._semaphore = new AjaxResource.Semaphore();
+  this._semaphore = new AjaxResource.Semaphore(function() {
+    var old_submit_value = null;
+    return {
+      on_unavailable: function() {
+	if (old_submit_value === null) {
+	  self.submit_button().attr("disabled", true);
+
+	  old_submit_value = self.submit_button().val();
+	  self.submit_button().val("Processing...");
+	} else {
+	  // do nothing since it has been disabled
+	}
+      },
+      on_available: function() {
+	if (old_submit_value !== null) {
+	  self.submit_button().val(old_submit_value);
+	  self.submit_button().attr("disabled", false);
+	  old_submit_value = null;
+	} else {
+	  // do nothing since already available
+	}
+      }
+    };
+  }());
+
+  // make sure the submit button is not disabled
+  this.submit_button().attr("disabled", false);
 
   this.submit_button().bind("click", function(event) {
     event.preventDefault();
