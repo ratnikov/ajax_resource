@@ -1,4 +1,4 @@
-AJAX_RESOURCE_VERSION = '0.03'
+AJAX_RESOURCE_VERSION = '0.04'
 
 Gem::Specification.new do |s|
   s.name = "ajax_resource"
